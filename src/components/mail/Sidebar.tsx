@@ -272,7 +272,7 @@ export function Sidebar({
         </div>
         {!collapsed && (
           <div className="min-w-0 flex-1 leading-tight">
-            <div className="truncate text-xs font-medium text-foreground">Eve Navarro</div>
+            <div className="truncate text-xs font-medium text-foreground">Uthaimin</div>
             <div className="truncate text-[11px] text-muted-foreground">kryputh@stealth.me</div>
           </div>
         )}

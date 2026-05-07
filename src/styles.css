@@ -248,9 +248,13 @@
   }
   .mail-reader-title,
   .mail-reader-meta,
-  .mail-reader-field {
+  .mail-reader-field,
+  .mail-attachment-name {
     font-family: var(--font-mail-preview);
     letter-spacing: 0;
+  }
+  .mail-attachment-name {
+    font-feature-settings: "ss01", "ss02", "cv11";
   }
   .mail-reader-body {
     font-family: var(--font-mail-reader);

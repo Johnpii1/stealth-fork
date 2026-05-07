@@ -1,6 +1,23 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Archive, Forward, Paperclip, Reply, ReplyAll, Sparkles, Star, Trash2 } from "lucide-react";
+import {
+  Archive,
+  Braces,
+  File,
+  FileArchive,
+  FileText,
+  Forward,
+  Image,
+  KeyRound,
+  Paperclip,
+  Reply,
+  ReplyAll,
+  Sparkles,
+  Star,
+  Table2,
+  Trash2,
+  type LucideIcon,
+} from "lucide-react";
 import { EventMailCard } from "@/features/calendar";
 import type { Email } from "./data";
 
@@ -74,7 +91,7 @@ export function EmailView({ email }: { email: Email | null }) {
               </div>
             </div>
 
-            <div className="scrollbar-thin flex-1 overflow-y-auto px-5 py-5 sm:px-7">
+            <div className="scrollbar-thin flex-1 overflow-y-auto px-5 pb-28 pt-5 sm:px-7">
               <article className="mx-auto w-full max-w-[920px]">
                 <div className="border-b border-white/[0.07] pb-5">
                   <div className="min-w-0 flex-1">
@@ -102,22 +119,22 @@ export function EmailView({ email }: { email: Email | null }) {
                 <ReaderBody body={email.body} />
 
                 {email.attachments?.length ? (
-                  <div className="mt-7 max-w-[760px]">
+                  <div className="mt-7 max-w-[500px]">
                     <div className="mail-reader-meta mb-2 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
                       <Paperclip className="h-3 w-3" /> {email.attachments.length} attachment
                       {email.attachments.length > 1 ? "s" : ""}
                     </div>
-                    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 max-w-[520px]">
+                    <div className="grid max-w-[440px] grid-cols-1 gap-2 sm:grid-cols-2">
                       {email.attachments.map((attachment) => (
                         <motion.div
                           key={attachment.name}
-                          className="glass-tile flex items-center gap-2 rounded-md px-2 py-1.5"
+                          className="glass-tile flex min-w-0 items-center gap-2 rounded-md px-2 py-1.5"
                         >
-                          <div className="flex h-6 w-6 items-center justify-center rounded border border-white/[0.1] bg-white/[0.06] text-[8.5px] font-bold uppercase text-muted-foreground shadow-[inset_0_1px_0_oklch(1_0_0/0.1)]">
-                            {attachment.type}
-                          </div>
+                          <AttachmentIcon type={attachment.type} />
                           <div className="min-w-0 flex-1">
-                            <div className="truncate text-[11px] font-medium leading-[14px] text-foreground">{attachment.name}</div>
+                            <div className="mail-attachment-name truncate text-[11px] font-semibold leading-[14px] text-foreground/92">
+                              {attachment.name}
+                            </div>
                             <div className="text-[9.5px] leading-[12px] text-muted-foreground">{attachment.size}</div>
                           </div>
                         </motion.div>
@@ -126,7 +143,7 @@ export function EmailView({ email }: { email: Email | null }) {
                   </div>
                 ) : null}
 
-                <div className="h-16" />
+                <div className="h-8" />
               </article>
             </div>
 
@@ -137,7 +154,7 @@ export function EmailView({ email }: { email: Email | null }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 8, scale: 0.96 }}
                   transition={{ duration: 0.18 }}
-                  className="absolute bottom-16 right-4 z-20 w-[min(330px,calc(100%-2rem))] rounded-lg border border-white/[0.12] bg-black/25 p-3 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl"
+                  className="absolute bottom-[98px] right-4 z-20 w-[min(330px,calc(100%-2rem))] rounded-md border border-white/[0.12] bg-[oklch(0.13_0.005_270_/_0.78)] p-3 shadow-[0_20px_60px_-30px_rgba(0,0,0,0.95),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-2xl"
                 >
                   <div className="mail-reader-meta mb-2 flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
                     <Sparkles className="h-3 w-3" /> Smart reply
@@ -161,7 +178,7 @@ export function EmailView({ email }: { email: Email | null }) {
             <motion.button
               whileTap={{ scale: 0.94 }}
               onClick={() => setSmartReplyOpen((open) => !open)}
-              className="mail-reader-meta absolute bottom-4 right-4 z-30 flex h-11 w-[168px] items-center gap-3 rounded-xl border border-white/[0.13] bg-white/[0.055] px-4 text-xs font-medium text-foreground/92 shadow-[0_18px_54px_-28px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)] backdrop-blur-2xl transition hover:border-white/[0.2] hover:bg-white/[0.09]"
+              className="mail-reader-meta absolute bottom-10 right-4 z-30 flex h-11 w-[168px] items-center gap-3 rounded-md border border-white/[0.13] bg-white/[0.055] px-4 text-xs font-medium text-foreground/92 shadow-[0_18px_54px_-28px_rgba(0,0,0,0.9),inset_0_1px_0_rgba(255,255,255,0.14),inset_0_-1px_0_rgba(0,0,0,0.18)] backdrop-blur-2xl transition hover:border-white/[0.2] hover:bg-white/[0.09]"
             >
               <span className="grid h-5 w-5 place-items-center rounded-md border border-white/[0.12] bg-white/[0.06] shadow-[inset_0_1px_0_rgba(255,255,255,0.13)]">
                 <Sparkles className="h-3.5 w-3.5 text-foreground/80" />
@@ -173,6 +190,28 @@ export function EmailView({ email }: { email: Email | null }) {
       </AnimatePresence>
     </section>
   );
+}
+
+function AttachmentIcon({ type }: { type: string }) {
+  const { icon: Icon, className } = getAttachmentIcon(type);
+
+  return (
+    <div className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-white/[0.1] bg-white/[0.06] shadow-[inset_0_1px_0_oklch(1_0_0/0.12)]">
+      <Icon className={`h-4 w-4 ${className}`} />
+    </div>
+  );
+}
+
+function getAttachmentIcon(type: string): { icon: LucideIcon; className: string } {
+  const normalized = type.toLowerCase();
+
+  if (normalized === "pdf") return { icon: FileText, className: "text-red-300" };
+  if (normalized === "key") return { icon: KeyRound, className: "text-sky-200" };
+  if (normalized === "json") return { icon: Braces, className: "text-emerald-200" };
+  if (["png", "jpg", "jpeg", "gif", "webp"].includes(normalized)) return { icon: Image, className: "text-violet-200" };
+  if (["zip", "rar", "7z"].includes(normalized)) return { icon: FileArchive, className: "text-amber-200" };
+  if (["xls", "xlsx", "csv"].includes(normalized)) return { icon: Table2, className: "text-green-200" };
+  return { icon: File, className: "text-slate-200" };
 }
 
 function SenderIdentity({ email, compact = false }: { email: Email; compact?: boolean }) {
