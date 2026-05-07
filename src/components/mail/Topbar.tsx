@@ -25,27 +25,33 @@ export function Topbar({ onOpenPalette, onOpenSettings, onShowToast }: TopbarPro
   const accountRef = useRef<HTMLDivElement>(null);
 
   return (
-    <header className="glass mx-3 mt-3 flex h-14 items-center gap-3 rounded-2xl px-3 md:mx-3">
+    <header className="glass relative m-0 flex h-14 items-center gap-2 rounded-none border-t-0 px-3">
       <motion.div
-        animate={{ flex: focused ? 2 : 1 }}
+        animate={{ width: focused ? "min(34vw, 430px)" : "min(28vw, 360px)" }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="relative flex min-w-0 items-center"
+        className="relative flex h-9 min-w-[170px] max-w-[430px] shrink-0 items-center sm:min-w-[230px]"
       >
         <Search className="pointer-events-none absolute left-3 h-4 w-4 text-muted-foreground" />
         <input
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           onClick={onOpenPalette}
-          placeholder="Search messages, people, attachments…"
-          className="glow-ring h-10 w-full rounded-xl border border-white/5 bg-white/[0.04] pl-9 pr-24 text-sm text-foreground placeholder:text-muted-foreground/70 transition focus:bg-white/[0.06]"
+          placeholder="Search messages, people, proofs, attachments..."
+          className="glow-ring h-9 w-full rounded-md border border-white/[0.07] bg-white/[0.035] pl-9 pr-20 text-[13px] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.045)] placeholder:text-muted-foreground/70 transition focus:bg-white/[0.06]"
         />
         <button
           onClick={onOpenPalette}
-          className="absolute right-2 flex items-center gap-1 rounded-md border border-white/10 bg-black/30 px-1.5 py-1 font-mono text-[10px] text-muted-foreground"
+          className="absolute right-1.5 flex items-center gap-1 rounded border border-white/10 bg-black/30 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground"
         >
           <Command className="h-3 w-3" /> K
         </button>
       </motion.div>
+
+      <div className="hidden items-center gap-1.5 lg:flex">
+        {quickActions.map((action) => (
+          <QuickAction key={action.label} {...action} />
+        ))}
+      </div>
 
       <div className="ml-auto flex items-center gap-1">
         {/* Filter dropdown */}
@@ -242,9 +248,9 @@ export function Topbar({ onOpenPalette, onOpenSettings, onShowToast }: TopbarPro
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="pointer-events-none absolute left-0 right-0 top-full mx-3 mt-2 px-1 text-[11px] text-muted-foreground"
+            className="pointer-events-none absolute left-3 top-full mt-2 px-1 text-[11px] text-muted-foreground"
           >
-            Press <kbd className="rounded border border-white/10 bg-black/40 px-1">⌘K</kbd> for the command palette
+            Press <kbd className="rounded border border-white/10 bg-black/40 px-1">Ctrl+K</kbd> for the command palette
           </motion.div>
         )}
       </AnimatePresence>

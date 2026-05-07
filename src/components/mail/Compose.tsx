@@ -125,7 +125,9 @@ export function Compose({
       {open && (
         <>
           <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={onClose}
             className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
@@ -139,7 +141,10 @@ export function Compose({
           >
             <div className="flex items-center justify-between border-b border-white/5 px-4 py-3">
               <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">New message</div>
-              <button onClick={onClose} className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-white/[0.06] hover:text-foreground">
+              <button
+                onClick={onClose}
+                className="rounded-lg p-1.5 text-muted-foreground transition hover:bg-white/[0.06] hover:text-foreground"
+              >
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -185,7 +190,8 @@ export function Compose({
               
               {/* AI Suggestion */}
               <motion.div
-                initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.15 }}
                 className="mt-2 flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-[11px] text-muted-foreground"
               >
