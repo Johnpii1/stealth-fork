@@ -56,10 +56,9 @@ function MailApp() {
 
   const folderCounts = useMemo(
     () =>
-      Object.fromEntries(mailFolders.map((item) => [item.key, getEmailsForFolder(emails, item.key).length])) as Record<
-        MailFolder,
-        number
-      >,
+      Object.fromEntries(
+        mailFolders.map((item) => [item.key, getEmailsForFolder(emails, item.key).length]),
+      ) as Record<MailFolder, number>,
     [emails],
   );
   const visibleEmails = useMemo(() => getEmailsForFolder(emails, folder), [emails, folder]);
@@ -132,6 +131,56 @@ function MailApp() {
       showToast(`${e.from} blocked and postage marked for refund`);
     },
     onShowToast: showToast,
+    onAddEvent: (e: Email) => showToast(`${e.event?.title ?? "Event"} added to your calendar`),
+  };
+
+  const handleContextAction = (action: ContextAction, email: Email) => {
+    if (action === "snooze") {
+      updateEmail(email.id, { folder: "snoozed", time: "Tomorrow" });
+      showToast(`Snoozed "${email.subject}" until tomorrow`);
+      return;
+    }
+    if (action === "schedule") {
+      openCompose({
+        to: email.email,
+        subject: email.subject.startsWith("Re: ") ? email.subject : `Re: ${email.subject}`,
+        body: quoteBody(email),
+      });
+      return;
+    }
+    if (action === "translate") {
+      updateEmail(email.id, { labels: [...(email.labels ?? []), "Translated"] });
+      showToast("Translation view enabled");
+      return;
+    }
+    showToast("Conversation summary refreshed");
+  };
+
+  const handleComposeSubmit = (submission: ComposeSubmission) => {
+    const message: Email = {
+      id: `local-${Date.now()}`,
+      from: "Eve Navarro",
+      email: "eve*stealth.xyz",
+      subject: submission.subject,
+      preview: submission.body.slice(0, 120) || "Message ready for delivery",
+      body: submission.body,
+      time: submission.scheduled ? "Tomorrow" : "Now",
+      unread: false,
+      starred: false,
+      folder: submission.scheduled ? "scheduled" : "sent",
+      labels: [
+        submission.scheduled ? "Scheduled" : "Sent",
+        ...(submission.encrypted ? ["Encrypted"] : []),
+        ...(submission.receipt ? ["Receipt requested"] : []),
+      ],
+      attachments: submission.attachments.map((attachment) => ({
+        name: attachment.name,
+        size: attachment.size,
+        type: attachment.type,
+      })),
+      avatarColor: "#5b6470",
+    };
+    setEmails((current) => [message, ...current]);
   };
 
   // Mark as read on selection
