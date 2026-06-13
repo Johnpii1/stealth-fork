@@ -275,11 +275,16 @@ export function Topbar({
             onClick={() => setAccountOpen(!accountOpen)}
             className={cn(
               "flex items-center gap-2 rounded-[6px] border border-white/5 bg-white/[0.04] px-2 py-1.5 text-xs text-foreground transition hover:bg-white/[0.08]",
-              accountOpen && "bg-white/[0.08]"
+              accountOpen && "bg-white/[0.08]",
             )}
           >
-            <span className="h-5 w-5 rounded-full" style={{ background: "linear-gradient(135deg,#7a8290,#2b2b31)" }} />
-            <span className="hidden sm:inline">Personal</span>
+            <span
+              className="h-5 w-5 rounded-full"
+              style={{ background: "linear-gradient(135deg,#7a8290,#2b2b31)" }}
+            />
+            <span className="hidden sm:inline">
+              {account === "personal" ? "Personal" : "Protocol"}
+            </span>
           </button>
         </div>
         {typeof document !== "undefined" && createPortal(
