@@ -441,15 +441,15 @@ function QuickAction({
   );
 }
 
-function FilterToggle({ 
-  icon: Icon, 
-  label, 
-  checked, 
-  onChange 
-}: { 
-  icon: any; 
-  label: string; 
-  checked: boolean; 
+function FilterToggle({
+  icon: Icon,
+  label,
+  checked,
+  onChange,
+}: {
+  icon: any;
+  label: string;
+  checked: boolean;
   onChange: (v: boolean) => void;
 }) {
   return (
@@ -459,7 +459,7 @@ function FilterToggle({
         "flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-sm transition",
         checked
           ? "bg-white/[0.08] text-foreground"
-          : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground"
+          : "text-muted-foreground hover:bg-white/[0.04] hover:text-foreground",
       )}
     >
       <Icon className="h-3.5 w-3.5" />
