@@ -36,9 +36,20 @@ type CommandPaletteProps = {
   onNavigate?: (folder: MailFolder) => void;
   onArchive?: () => void;
   onOpenSettings?: () => void;
+  emails?: Email[];
+  onSelectEmail?: (email: Email) => void;
 };
 
-export function CommandPalette({ open, onClose, onCompose, onNavigate, onArchive, onOpenSettings }: CommandPaletteProps) {
+export function CommandPalette({
+  open,
+  onClose,
+  onCompose,
+  onNavigate,
+  onArchive,
+  onOpenSettings,
+  emails = [],
+  onSelectEmail,
+}: CommandPaletteProps) {
   const [q, setQ] = useState("");
 
   useEffect(() => {
