@@ -65,13 +65,12 @@ export async function submitPostage(
     });
   }
 
-  if (context.relayId && context.relayId !== "") {
-    const relayLimit = await checkRelayLimit(repository, context.relayId);
-    if (!relayLimit.allowed) {
-      throw new ApiError(429, "rate_limited", "Relay limit exceeded", {
-        retryAfterSeconds: relayLimit.retryAfterSeconds,
-      });
-    }
+  const relayId = context.relayId?.trim() || "unknown";
+  const relayLimit = await checkRelayLimit(repository, relayId);
+  if (!relayLimit.allowed) {
+    throw new ApiError(429, "rate_limited", "Relay limit exceeded", {
+      retryAfterSeconds: relayLimit.retryAfterSeconds,
+    });
   }
 
   if (await repository.getPostage(input.messageId)) {

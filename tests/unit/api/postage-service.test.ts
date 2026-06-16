@@ -82,6 +82,32 @@ describe("postage service", () => {
     ).rejects.toMatchObject({ status: 422 });
   });
 
+  it("rate limits missing relay ids through the unknown relay bucket", async () => {
+    const repository = new MemoryApiRepository();
+    await repository.setPolicy(recipient, {
+      allowUnknown: true,
+      minimumPostage: "100",
+      requireVerified: false,
+    });
+    for (let i = 0; i < 500; i++) {
+      await repository.incrementCounter("abuse:relay:unknown", 3600);
+    }
+
+    await expect(
+      submitPostage(repository, {
+        amount: "125",
+        messageId: "e".repeat(64),
+        paymentHash: "f".repeat(64),
+        recipient,
+        sender,
+      }),
+    ).rejects.toMatchObject({
+      status: 429,
+      code: "rate_limited",
+      message: "Relay limit exceeded",
+    });
+  });
+
   it("limits postage reads to message participants", async () => {
     const repository = new MemoryApiRepository();
     const postage = await repository.setPostage({
